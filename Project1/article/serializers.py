@@ -2,7 +2,6 @@ from rest_framework import serializers
 from .models import Article
 
 class ArticleSerializer(serializers.Serializer):
-
     title = serializers.CharField(max_length=120)
     description = serializers.CharField()
     body = serializers.CharField()
@@ -18,3 +17,4 @@ class ArticleSerializer(serializers.Serializer):
         instance.author_id = validated_data.get('author_id', instance.author_id)
         instance.save()
         return instance
+    
