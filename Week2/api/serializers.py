@@ -1,6 +1,6 @@
 from rest_framework import serializers
 from api.models import Block, Project, Task, TaskComment, TaskDocument,MemberProject
-from api import constants
+from api.utils import constants
 from users.serializers import UserSerializer
 
 class TaskSerializer2(serializers.ModelSerializer):
@@ -46,6 +46,14 @@ class TaskFullSerializer(TaskShortSerializer):
     class Meta(TaskShortSerializer.Meta):
         fields = TaskShortSerializer.Meta.fields + ('description',)
 
+class TaskSerializer(serializers.ModelSerializer):
+    project_id = serializers.IntegerField(write_only=True)
+    creator = UserSerializer(read_only=True)
+
+    class Meta:
+        model = Task
+        fields = ('id', 'name', 'status', 'project_id', 'creator', 'description')
+
 
 
 
@@ -81,23 +89,18 @@ class ProjectSerializer(serializers.ModelSerializer):
         return ''
 
 
-class ProjectSerializer2(serializers.ModelSerializer):
-    creator = UserSerializer(read_only=True)
 
-    class Meta:
-        model = Project
-        fields = '__all__'
 
 class ProjectSerializer2(serializers.ModelSerializer):
     id = serializers.IntegerField(read_only=True)
-    name = serializers.CharField(required=True)
-    creator = serializers.CharField(source='creator.username')
+    name= serializers.CharField(required=True)
+    creator= serializers.CharField(source='creator.username')
     description = serializers.CharField()
-    tasks = TaskSerializer2(many=True, read_only=True, required=False)
-    blocks = BlockSerializer(many=True, read_only=True, required=False)
+    tasks= TaskSerializer2(many=True, read_only=True, required=False)
+    blocks= BlockSerializer(many=True, read_only=True, required=False)
     class Meta:
         model = Project
-        fields = ('id', 'name','creator', 'description', 'tasks')
+        fields = ('id', 'name', 'creator', 'description', 'tasks')
 
 
 
