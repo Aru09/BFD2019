@@ -9,8 +9,8 @@ from rest_framework import routers
 # ]
 
 router = routers.DefaultRouter()
-router.register('reviews', ReviewViewSet, base_name='main')
-router.register('orders', OrderViewSet, base_name='main')
+router.register('main/reviews', ReviewViewSet)
+router.register('main/orders', OrderViewSet)
 
 
 urlpatterns = router.urls
